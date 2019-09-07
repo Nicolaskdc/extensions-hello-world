@@ -44,9 +44,14 @@ twitch.onAuthorized(function(auth) {
     $.ajax(requests.get);
 });
 
-function updateBlock(hex) {
-    twitch.rig.log('Updating block color');
-    $('#color').css('background-color', hex);
+function updateBlock(msgjson) {
+    msg = JSON.parse(msgjson);
+    twitch.rig.log('Updating block color AND POSITION');
+    console.log(msg);
+    twitch.rig.log(msg);
+    $('#color').css('background-color', msg.color);
+    $('#color').css('top', msg.position.top);
+    $('#color').css('left', msg.position.left);
 }
 
 function logError(_, error, status) {
@@ -70,7 +75,7 @@ $(function() {
 
     // listen for incoming broadcast message from our EBS
     twitch.listen('broadcast', function (target, contentType, color) {
-        twitch.rig.log('Received broadcast color');
+        twitch.rig.log('Received broadcast message');
         updateBlock(color);
     });
 });

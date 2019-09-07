@@ -215,14 +215,23 @@ function sendColorBroadcast(channelId) {
 
   // Create the POST body for the Twitch API request.
   const currentColor = color(channelColors[channelId] || initialColor).hex();
+
+  const msg = JSON.stringify({
+    color: currentColor,
+    position: {
+      top: Math.floor(Math.random()*500-250)+"px",
+      left: Math.floor(Math.random()*500-250)+"px",
+    }
+  });
+
   const body = JSON.stringify({
     content_type: 'application/json',
-    message: currentColor,
+    message: msg,
     targets: ['broadcast'],
   });
 
   // Send the broadcast request to the Twitch API.
-  verboseLog(STRINGS.colorBroadcast, currentColor, channelId);
+  verboseLog(STRINGS.colorBroadcast, msg, channelId);
   request(
     `https://api.twitch.tv/extensions/message/${channelId}`,
     {
